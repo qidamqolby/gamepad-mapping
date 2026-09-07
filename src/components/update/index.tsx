@@ -5,6 +5,7 @@ import Progress from '@/components/update/Progress'
 import './update.css'
 
 const Update = () => {
+  const ipcRenderer = window.ipcRenderer
   const [checking, setChecking] = useState(false)
   const [updateAvailable, setUpdateAvailable] = useState(false)
   const [versionInfo, setVersionInfo] = useState<VersionInfo>()
@@ -18,15 +19,17 @@ const Update = () => {
     onOk?: () => void
   }>({
     onCancel: () => setModalOpen(false),
-    onOk: () => window.ipcRenderer.invoke('start-download'),
+    onOk: () => ipcRenderer?.invoke('start-download'),
   })
 
   const checkUpdate = async () => {
+    if (!ipcRenderer) return
+
     setChecking(true)
     /**
      * @type {import('electron-updater').UpdateCheckResult | null | { message: string, error: Error }}
      */
-    const result = await window.ipcRenderer.invoke('check-update')
+    const result = await ipcRenderer.invoke('check-update')
     setProgressInfo({ percent: 0 })
     setChecking(false)
     setModalOpen(true)
@@ -45,7 +48,7 @@ const Update = () => {
         ...state,
         cancelText: 'Cancel',
         okText: 'Update',
-        onOk: () => window.ipcRenderer.invoke('start-download'),
+        onOk: () => ipcRenderer?.invoke('start-download'),
       }))
       setUpdateAvailable(true)
     } else {
@@ -68,24 +71,28 @@ const Update = () => {
       ...state,
       cancelText: 'Later',
       okText: 'Install now',
-      onOk: () => window.ipcRenderer.invoke('quit-and-install'),
+      onOk: () => ipcRenderer?.invoke('quit-and-install'),
     }))
   }, [])
 
   useEffect(() => {
+    if (!ipcRenderer) return
+
     // Get version information and whether to update
-    window.ipcRenderer.on('update-can-available', onUpdateCanAvailable)
-    window.ipcRenderer.on('update-error', onUpdateError)
-    window.ipcRenderer.on('download-progress', onDownloadProgress)
-    window.ipcRenderer.on('update-downloaded', onUpdateDownloaded)
+    ipcRenderer.on('update-can-available', onUpdateCanAvailable)
+    ipcRenderer.on('update-error', onUpdateError)
+    ipcRenderer.on('download-progress', onDownloadProgress)
+    ipcRenderer.on('update-downloaded', onUpdateDownloaded)
 
     return () => {
-      window.ipcRenderer.off('update-can-available', onUpdateCanAvailable)
-      window.ipcRenderer.off('update-error', onUpdateError)
-      window.ipcRenderer.off('download-progress', onDownloadProgress)
-      window.ipcRenderer.off('update-downloaded', onUpdateDownloaded)
+      ipcRenderer.off('update-can-available', onUpdateCanAvailable)
+      ipcRenderer.off('update-error', onUpdateError)
+      ipcRenderer.off('download-progress', onDownloadProgress)
+      ipcRenderer.off('update-downloaded', onUpdateDownloaded)
     }
-  }, [])
+  }, [ipcRenderer, onDownloadProgress, onUpdateCanAvailable, onUpdateDownloaded, onUpdateError])
+
+  if (!ipcRenderer) return null
 
   return (
     <>
@@ -122,7 +129,7 @@ const Update = () => {
               )}
         </div>
       </Modal>
-      <button disabled={checking} onClick={checkUpdate}>
+      <button className="update-button" disabled={checking} onClick={checkUpdate}>
         {checking ? 'Checking...' : 'Check update'}
       </button>
     </>

@@ -49,6 +49,14 @@ function App() {
   const selectedMapping = selectedGamepad
     ? getMapping(selectedGamepad.index)
     : undefined;
+  const selectedGamepadName = selectedGamepad
+    ? selectedGamepad.id.split("(")[0].trim() ||
+      `Gamepad ${selectedGamepad.index + 1}`
+    : "No controller";
+  const mappingCount =
+    (selectedMapping?.buttonMappings.length || 0) +
+    (selectedMapping?.axisMappings.length || 0) +
+    (selectedMapping?.dpadMappings?.length || 0);
 
   const handleControlSelect = useCallback(
     (control: SelectedControl) => {
@@ -66,6 +74,25 @@ function App() {
 
   return (
     <div className="app">
+      <header className="app-topbar">
+        <div className="app-brand">
+          <span className="brand-mark" aria-hidden="true">GM</span>
+          <div>
+            <h1>Gamepad Mapping</h1>
+            <p>Input workspace</p>
+          </div>
+        </div>
+        <div className="active-device-summary" aria-live="polite">
+          <span className={`connection-dot ${selectedGamepad ? "connected" : ""}`} />
+          <div>
+            <span className="active-device-label">Active controller</span>
+            <strong>{selectedGamepadName}</strong>
+          </div>
+        </div>
+        <div className="app-topbar-actions">
+          <UpdateElectron />
+        </div>
+      </header>
       {gamepads.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon">🎮</div>
@@ -83,12 +110,12 @@ function App() {
           <main className="visualization-panel">
             {selectedGamepad && (
               <>
-                <div className="panel-header">
-                  <h2>
-                    {selectedGamepad.id.split("(")[0].trim() ||
-                      `Gamepad ${selectedGamepad.index + 1}`}
-                  </h2>
-                  <p className="panel-subtitle">{selectedGamepad.id}</p>
+                <div className="workspace-section-header">
+                  <div>
+                    <p className="eyebrow">Controller canvas</p>
+                    <h2>{selectedGamepadName}</h2>
+                  </div>
+                  <span className="live-status"><i /> Live input</span>
                 </div>
                 <div className="visualization-content">
                   <ControllerVisualization
@@ -103,8 +130,12 @@ function App() {
           </main>
 
           <aside className="mapping-panel">
-            <div className="panel-header">
-              <h2>Mapping</h2>
+            <div className="workspace-section-header inspector-header">
+              <div>
+                <p className="eyebrow">Inspector</p>
+                <h2>{selectedControl ? "Control mapping" : "All mappings"}</h2>
+              </div>
+              <span className="mapping-count">{mappingCount}</span>
             </div>
             <div className="mapping-content">
               {selectedGamepad ? (
@@ -183,7 +214,6 @@ function App() {
           </aside>
         </div>
       )}
-      <UpdateElectron />
     </div>
   );
 }

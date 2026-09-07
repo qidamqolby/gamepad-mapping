@@ -22,3 +22,19 @@
     text-align: center;
   }
 }
+
+.update-button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 11px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.update-button:hover:not(:disabled) {
+  border-color: rgba(83, 213, 255, .5);
+  color: var(--cyan);
+  background: var(--cyan-soft);
+}

@@ -503,3 +503,41 @@
   font-size: 0.875rem;
   line-height: 1.5;
 }
+
+/* Mapping workstation theme */
+.mapping-panel-content { padding: 20px; color: var(--text); }
+.mapping-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom-color: var(--line); }
+.mapping-header h3, .direction-label, .mapping-item-label, .threshold-value { color: var(--text); }
+.panel-subtitle, .mapping-label, .mappings-section-title, .mapping-hint, .direction-mapping.unmapped, .no-mappings { color: var(--muted); }
+.mapping-label, .mappings-section-title { font-size: 10px; letter-spacing: .12em; }
+.mapping-editor { gap: 20px; }
+.mapped-key-large, .mapped-key, .mapped-key-small {
+  color: #061018;
+  background: var(--cyan);
+  border-radius: 7px;
+  box-shadow: none;
+}
+.button-mapping-item, .mapping-item {
+  border-color: var(--line);
+  background: var(--surface-raised);
+}
+.button-mapping-item:hover { border-color: #40536b; background: var(--surface-hover); }
+.button-mapping-item.has-mapping { border-color: rgba(87, 227, 166, .34); background: rgba(87, 227, 166, .08); }
+.button-mapping-item.active { border-color: var(--green); background: rgba(87, 227, 166, .12); box-shadow: 0 0 0 2px rgba(87, 227, 166, .08); }
+.button-mapping-item.editing { border-color: var(--cyan); background: var(--cyan-soft); box-shadow: 0 0 0 2px rgba(83, 213, 255, .08); }
+.editing-hint { color: var(--cyan); background: var(--cyan-soft); border-color: rgba(83, 213, 255, .22); }
+.mapping-actions { border-top-color: var(--line); }
+.btn-map, .btn-edit { color: #061018; background: var(--cyan); }
+.btn-map:hover, .btn-edit:hover { background: #87e4ff; }
+.btn-revert { color: var(--text); background: #344052; }
+.btn-remove, .btn-remove-small { background: var(--red); }
+.mode-button { color: var(--muted); border-color: var(--line); background: var(--surface-raised); }
+.mode-button:hover { color: var(--text); border-color: #40536b; background: var(--surface-hover); }
+.mode-button.active { color: var(--cyan); border-color: var(--cyan); background: var(--cyan-soft); }
+.mapping-mode-selector, .threshold-control { border-color: var(--line); }
+.threshold-control label, .threshold-control span { color: var(--muted); }
+.threshold-control input[type="range"] { background: #344052; }
+.threshold-control input[type="range"]::-webkit-slider-thumb { background: var(--cyan); }
+.threshold-control input[type="range"]::-moz-range-thumb { background: var(--cyan); }
+.mapping-type-badge { color: #061018; background: var(--cyan); }
+.pressed-indicator, .active-indicator { color: var(--green); }

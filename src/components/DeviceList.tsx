@@ -11,7 +11,8 @@ export function DeviceList({ gamepads, selectedGamepadIndex, onSelectGamepad }: 
   return (
     <aside className="device-panel">
       <div className="panel-header">
-        <h2>Devices</h2>
+        <p className="eyebrow">Devices</p>
+        <h2>{gamepads.length} connected</h2>
       </div>
       <div className="device-list">
         {gamepads.length === 0 ? (
@@ -42,4 +43,3 @@ export function DeviceList({ gamepads, selectedGamepadIndex, onSelectGamepad }: 
     </aside>
   )
 }
-
